@@ -2,6 +2,7 @@ import requests
 import lxml.html
 import sys
 import codecs
+import xlsxwriter
 
 # zorgt ervoor dat speciale karakters geprint worden : vb. Chinese karakters
 sys.stdout = codecs.getwriter('utf8')(sys.stdout.buffer)
@@ -18,7 +19,7 @@ lowprices = Issue_Default.xpath('.//td[@class="ValueCell"][5]/span/text()')
 finals = Issue_Default.xpath('.//td[@class="ValueCell"][6]/span/text()')
 times = Issue_Default.xpath('.//td[@class="ValueCell"][7]/span/text()')
 
-print(titles)
+#print(titles)
 #print(prices)
 
 
@@ -32,39 +33,22 @@ for info in zip(titles, lastprices, highprices, lowprices,finals,times):
     resp['final'] = info[4]
     resp['time'] = info[5]
     output.append(resp)
-for var in enumerate(output):
-    print(var)
+#for var in enumerate(output):
+#    print(var)
 
-"""
-html = requests.get('https://www.tijd.be')
-doc = lxml.html.fromstring(html.content)
+workbook = xlsxwriter.Workbook('d:\data\it\python\koersen.xlsx')
+worksheet = workbook.add_worksheet()
 
-new_releases = doc.xpath('//div[@id="tab_newreleases_content"]')[0]
+row = -1
 
-titles = new_releases.xpath('.//div[@class="tab_item_name"]/text()')
-prices = new_releases.xpath('.//div[@class="discount_final_price"]/text()')
+for j in output:
+        #print(j)
+        row += 1
+        col = -1
+        for k in j:
+            col += 1
+            print("{}:{}".format(k,j[k]))
+            worksheet.write(row,col,j[k] )
 
-tags = [tag.text_content() for tag in new_releases.xpath('.//div[@class="tab_item_top_tags"]')]
-tags = [tag.split(', ') for tag in tags]
 
-platforms_div = new_releases.xpath('.//div[@class="tab_item_details"]')
-total_platforms = []
-
-for game in platforms_div:
-    temp = game.xpath('.//span[contains(@class, "platform_img")]')
-    platforms = [t.get('class').split(' ')[-1] for t in temp]
-    if 'hmd_separator' in platforms:
-        platforms.remove('hmd_separator')
-    total_platforms.append(platforms)
-
-output = []
-for info in zip(titles, prices, tags, total_platforms):
-    resp = {}
-    resp['title'] = info[0]
-    resp['price'] = info[1]
-    resp['tags'] = info[2]
-    resp['platforms'] = info[3]
-    output.append(resp)
-for var in enumerate(output):
-    print(var)
-"""
+workbook.close()
