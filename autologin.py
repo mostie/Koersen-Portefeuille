@@ -1,6 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import requests
+import lxml.html
+import sys
+import codecs
+
 time.sleep(2)
 browser = webdriver.Chrome()
 #browser.get("https://www.evernote.com/Login.action")
@@ -20,4 +25,5 @@ time.sleep(3)
 #simuleer het aanklikken van de link met naam 'portefeuille'
 elem = browser.find_element_by_link_text("Portefeuille")
 elem.click()
+
 #browser.quit()
