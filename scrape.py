@@ -3,6 +3,25 @@ import lxml.html
 import sys
 import codecs
 import xlsxwriter
+import openpyxl
+from openpyxl import load_workbook
+import datetime
+
+
+# input : UU:MM => YYYY/MM/DD UU:00:00
+def convert_time_to_date_time(etime):
+    etime_array = etime.split(":")
+    #print(etime_array[0])
+    #print(etime_array[1])
+    etime = etime_array[0] + ":" + "00"
+    #print(etime)
+    etime += ':00'
+    current_datetime = str(datetime.datetime.now())[0:10]
+    current_datetime = current_datetime + " " + etime
+    #print(current_datetime)
+    return current_datetime
+
+    #rcurrent_datetime.strftime('%x %X')
 
 # zorgt ervoor dat speciale karakters geprint worden : vb. Chinese karakters
 sys.stdout = codecs.getwriter('utf8')(sys.stdout.buffer)
@@ -31,24 +50,44 @@ for info in zip(titles, lastprices, highprices, lowprices,finals,times):
     resp['high'] = info[2]
     resp['low'] = info[3]
     resp['final'] = info[4]
-    resp['time'] = info[5]
+    resp['time'] = convert_time_to_date_time(info[5])
     output.append(resp)
 #for var in enumerate(output):
 #    print(var)
 
-workbook = xlsxwriter.Workbook('d:\data\it\python\koersen.xlsx')
-worksheet = workbook.add_worksheet()
+wb=load_workbook('d:\data\it\python\koersen.xlsx')
 
-row = -1
+# activate demo.xlsx
+sheet=wb.active
+
+# get max row count
+max_row=sheet.max_row
+
+#workbook = xlsxwriter.Workbook('d:\data\it\python\koersen.xlsx')
+#worksheet = workbook.add_worksheet()
+
+workbook = openpyxl.load_workbook('d:\data\it\python\koersen.xlsx')
+worksheet = workbook['Sheet1']
+
+row = max_row
+
+print(row)
+
+#row = -1
 
 for j in output:
         #print(j)
-        row += 1
-        col = -1
+        row +=1
+        col = 0
         for k in j:
             col += 1
-            print("{}:{}".format(k,j[k]))
-            worksheet.write(row,col,j[k] )
+            print(j[k])
+            print(row)
+            print(col)
+            #print("{}:{}".format(k,j[k]))
+            #worksheet.write(row,col,j[k] )
+            worksheet.cell(row, col).value = j[k]
 
+workbook.save('d:\data\it\python\koersen.xlsx')
 
 workbook.close()
