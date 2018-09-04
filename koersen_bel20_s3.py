@@ -49,6 +49,7 @@ def csv_writer(output, path):
         for line in output:
 
             writer.writerow(line)
+            
 
 
 def write_bel20_to_amazon_s3():
