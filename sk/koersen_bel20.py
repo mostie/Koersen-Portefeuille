@@ -2,16 +2,16 @@ import requests
 import lxml.html
 import sys
 import codecs
-import xlsxwriter
-import openpyxl
-from openpyxl import load_workbook
+#import xlsxwriter
+#import openpyxl
+#from openpyxl import load_workbook
 import time
 import datetime
 import os
 import pymysql
 from apscheduler.schedulers.blocking import BlockingScheduler
-import boto3
-import csv
+#import boto3
+#import csv
 
 
 '''
