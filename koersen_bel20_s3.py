@@ -2,16 +2,16 @@ import requests
 import lxml.html
 import sys
 import codecs
-import xlsxwriter
-import openpyxl
-from openpyxl import load_workbook
+#import xlsxwriter
+#import openpyxl
+#from openpyxl import load_workbook
 import time
 import datetime
 import os
 import pymysql
 from apscheduler.schedulers.blocking import BlockingScheduler
-import boto3
-import csv
+#import boto3
+#import csv
 
 
 '''
@@ -128,7 +128,7 @@ def write_bel20_to_amazon_s3():
 
 if __name__ == '__main__':
     scheduler = BlockingScheduler()
-    scheduler.add_job(write_bel20_to_amazon_s3, 'interval', seconds=3600)
+    scheduler.add_job(write_bel20_to_amazon_s3, 'interval', seconds=10)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
     try:
